@@ -1,19 +1,18 @@
 package Blackjack;
 
-
 public class Card {
     private int value;
-    private int card;
+    private String name;
     private String figure;
 
-    public Card (int value, int card, String figure) {
+    public Card (int value, String name, String figure) {
         this.value = value;
-        this.card = card;
+        this.name = name;
         this.figure = figure;
     }
 
-    public int getCard() {
-        return card;
+    public String getName() {
+        return name;
     }
 
     public String getFigure() {
