@@ -8,7 +8,7 @@ public class Game {
     
     private List<Card> playerHand;
     private List<Card> dealerHand;
-    private int playerScore, dealerScore, wallet, bet, nCards;
+    private int playerScore, dealerScore, wallet, bet, nCards, aceP, aceD;
     private int[] stats;
     private Deck deck;
 
@@ -21,6 +21,8 @@ public class Game {
         wallet = 0;
         bet = 0;
         nCards = 0;
+        aceP = 0;
+        aceD = 0;
         stats = new int[10];
         resetStats();
     }
@@ -32,6 +34,8 @@ public class Game {
         dealerScore = 0;
         nCards = 0;
         bet = 0;
+        aceP = 0;
+        aceD = 0;
         deck.newDeck();
         resetStats();
     }
@@ -80,11 +84,29 @@ public class Game {
     } 
 
     public int getPlayerScore() {
-        return playerScore;
+        int aux = playerScore;
+        if(aceP != 0) {
+            if((aux + aceP*11) < 21) {
+                aux += aceP*11;
+            }
+            else {
+                aux += aceP*1;
+            }
+        }
+        return aux;
     }
 
     public int getDealerScore() {
-        return dealerScore;
+        int aux = dealerScore;
+        if(aceD != 0) {
+            if((aux + aceD*11) < 21) {
+                aux += aceD*11;
+            }
+            else {
+                aux += aceD*1;
+            }
+        }
+        return aux;
     }
 
     public List<Card> getPlayerCards () {
@@ -96,13 +118,13 @@ public class Game {
     }
 
     public boolean checkWin() {
-        if(playerScore > 21 ) {
+        if(getPlayerScore() > 21 ) {
             return false;
         }
-        if(dealerScore > 21) {
+        if(getDealerScore() > 21) {
             return true;
         }
-        if (dealerScore > playerScore) {
+        if (getDealerScore() > getPlayerScore()) {
             return false;
         }
         return true;
