@@ -68,7 +68,16 @@ public class Game {
         return c;
     }
 
-    public Card dealerHit() {
+    public void playDealer() {
+        while(getDealerScore() < 21) {
+            dealerHit();
+            if (getDealerScore() >= getPlayerScore()) {
+                break;
+            }
+        }
+    }
+
+    private Card dealerHit() {
         Card c = deck.getCard();
         dealerHand.add(c);
         stats[c.getValue() -1] -= 1;
