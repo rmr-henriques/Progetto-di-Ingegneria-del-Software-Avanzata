@@ -24,7 +24,8 @@ public class Deck {
         newDeck();
     }
 
-    private void newDeck() {
+    public void newDeck() {
+        deck.clear();
         Collections.shuffle(cards);
         for(Card card : cards)
             deck.add(card);   
