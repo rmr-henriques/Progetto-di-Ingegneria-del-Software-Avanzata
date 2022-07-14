@@ -1,4 +1,4 @@
-package Blackjack;
+package Blackjack.FrontEnd;
 
 import java.awt.*;
 import java.awt.event.*;
