@@ -1,6 +1,5 @@
 package Blackjack;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,8 +12,8 @@ public class Game {
     private Deck deck;
 
     public Game () {
-        playerHand = new ArrayList<Card>();
-        dealerHand = new ArrayList<Card>();
+        playerHand = new LinkedList<Card>();
+        dealerHand = new LinkedList<Card>();
         deck = new Deck();
         playerScore = 0;
         dealerScore = 0;
@@ -85,12 +84,12 @@ public class Game {
 
     public int getPlayerScore() {
         int aux = playerScore;
-        if(aceP != 0) {
-            if((aux + aceP*11) < 21) {
-                aux += aceP*11;
+        for (int i = 0; i <aceP; i++) {
+            if((aux + 11) < 21) {
+                aux +=11;
             }
             else {
-                aux += aceP*1;
+                aux++;
             }
         }
         return aux;
@@ -98,12 +97,12 @@ public class Game {
 
     public int getDealerScore() {
         int aux = dealerScore;
-        if(aceD != 0) {
-            if((aux + aceD*11) < 21) {
-                aux += aceD*11;
+        for (int i = 0; i <aceD; i++) {
+            if((aux + 11) < 21) {
+                aux +=11;
             }
             else {
-                aux += aceD*1;
+                aux++;
             }
         }
         return aux;
