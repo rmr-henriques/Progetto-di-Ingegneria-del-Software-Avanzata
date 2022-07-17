@@ -1,11 +1,12 @@
 package Blackjack.BackEnd;
 
-import java.util.Scanner;
+//import java.util.Scanner;
 
 public class App 
 {
     public static void main( String[] args )
     {
+        /*
         Game g = new Game();
         Scanner s = new Scanner(System.in);
         System.out.println( "New Game!" );
@@ -45,5 +46,6 @@ public class App
             System.out.println("Player looses.");
         }
         s.close();
+        */
     }
 }

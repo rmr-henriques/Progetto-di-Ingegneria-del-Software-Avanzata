@@ -99,10 +99,12 @@ public class GameScene {
                 dealerInfo.setText(text);
 
                 String result = ""; 
-                if(g.checkWin())
+                if(g.checkWin() == 1)
                     result = "You Win!";
-                else
+                else if (g.checkWin() == 0)
                     result = "You Lose...";
+                else 
+                    result = "You Tie.";
                 
                 JLabel resultLabel = new JLabel(result,JLabel.CENTER);
                 resultLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
@@ -134,7 +136,7 @@ public class GameScene {
                 });
 
                 panel.add(backToMenu);
-                
+
                 panel.add(resultLabel);
 
                 frame.repaint();
@@ -149,8 +151,7 @@ public class GameScene {
 
         hitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Card c4 = g.playerHit();
-                
+                //Card c4 = g.playerHit();
             }
         });
 
