@@ -2,6 +2,8 @@ package Blackjack.FrontEnd;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
+
 import javax.swing.*;
 
 import Blackjack.BackEnd.Card;
@@ -13,6 +15,7 @@ public class GameScene {
     private static JPanel panel;
     private static Game g;
     private static int bet;
+    private static JLabel dealerInfo;
 
     public GameScene(JFrame frame){ 
         GameScene.frame = frame;
@@ -69,7 +72,7 @@ public class GameScene {
         Card c2 = g.playerHit();
         Card c3 = g.dealerHit();
 
-        JLabel dealerInfo = new JLabel("<html>Dealer: <br/>" + c3.getName() + " of " + c3.getFigure() +"<br/> Score: " + g.getDealerScore() + "</html>", JLabel.CENTER);
+        dealerInfo = new JLabel("<html>Dealer: <br/>" + c3.getName() + " of " + c3.getFigure() +"<br/> Score: " + g.getDealerScore() + "</html>", JLabel.CENTER);
         dealerInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 20)); 
         frame.add(dealerInfo);
 
@@ -87,7 +90,54 @@ public class GameScene {
 
         holdButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //todo
+                g.playDealer();
+                List<Card> dealer = g.getDealerCards();
+                String text = "<html>Dealer: <br/>";
+                for (Card c : dealer)
+                    text += c.getName() + " of " + c.getFigure() + "<br/>";
+                text += "Score: " + g.getDealerScore() + "<html>";
+                dealerInfo.setText(text);
+
+                String result = ""; 
+                if(g.checkWin())
+                    result = "You Win!";
+                else
+                    result = "You Lose...";
+                
+                JLabel resultLabel = new JLabel(result,JLabel.CENTER);
+                resultLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+
+                panel.removeAll();
+
+                JButton betAgain = new JButton("Bet");
+                betAgain.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+                betAgain.setFocusable(false);
+                betAgain.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        frame.getContentPane().removeAll();
+                        frame.repaint();
+                        new GameScene(frame);
+                    }
+                });
+
+                panel.add(betAgain);
+
+                JButton backToMenu = new JButton("Main Menu");
+                backToMenu.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+                backToMenu.setFocusable(false);
+                backToMenu.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        frame.getContentPane().removeAll();
+                        frame.repaint();
+                        new Menu(frame);
+                    }
+                });
+
+                panel.add(backToMenu);
+                
+                panel.add(resultLabel);
+
+                frame.repaint();
             }
         });
 
@@ -99,7 +149,6 @@ public class GameScene {
 
         hitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //todo
                 Card c4 = g.playerHit();
                 
             }
