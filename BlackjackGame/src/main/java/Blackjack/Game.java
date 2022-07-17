@@ -77,7 +77,7 @@ public class Game {
         }
     }
 
-    private Card dealerHit() {
+    public Card dealerHit() {
         Card c = deck.getCard();
         dealerHand.add(c);
         stats[c.getValue() -1] -= 1;

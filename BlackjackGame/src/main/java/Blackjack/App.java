@@ -21,11 +21,9 @@ public class App
         g.placeBet(bet);
         Card c1 = g.playerHit();
         Card c2 = g.playerHit();
-        Card c3 = g.dealerHit();
         System.out.println("Player: " + c1.getName() + " of " + c1.getFigure() + ", " + c2.getName() + " of " + c2.getFigure());
         System.out.println("Player score: " +  g.getPlayerScore());
 
-        System.out.println("Dealer: " + c3.getName() + " of " + c3.getFigure());
         System.out.println("Dealer score: " +  g.getDealerScore());
 
         System.out.println("hit or stand?");
@@ -37,7 +35,6 @@ public class App
             move = s.nextLine().trim();
         }
         while(g.getDealerScore() < 21 ) {
-             g.dealerHit();
              System.out.println("Dealer score: "+ g.getDealerScore());
         }
         if(g.checkWin()) {
