@@ -16,6 +16,7 @@ public class GameScene {
     private static Game g;
     private static int bet;
     private static JLabel dealerInfo;
+    private static JLabel cardsInfo;
 
     public GameScene(JFrame frame){ 
         GameScene.frame = frame;
@@ -76,7 +77,7 @@ public class GameScene {
         dealerInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 20)); 
         frame.add(dealerInfo);
 
-        JLabel cardsInfo = new JLabel("<html>Player: <br/>" + c1.getName() + " of " + c1.getFigure() + "<br/>" + c2.getName() + " of " + c2.getFigure()+ "<br/> Score: " + g.getPlayerScore() + "<html>", JLabel.CENTER);
+        cardsInfo = new JLabel("<html>Player: <br/>" + c1.getName() + " of " + c1.getFigure() + "<br/>" + c2.getName() + " of " + c2.getFigure()+ "<br/> Score: " + g.getPlayerScore() + "<html>", JLabel.CENTER);
         cardsInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
         frame.add(cardsInfo);
         
@@ -151,7 +152,53 @@ public class GameScene {
 
         hitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //Card c4 = g.playerHit();
+                g.playerHit();
+                List<Card> player = g.getPlayerCards();
+                String text = "<html>Player: <br/>";
+                for (Card c : player)
+                    text += c.getName() + " of " + c.getFigure() + "<br/>";
+                text += "Score: " + g.getPlayerScore() + "<html>";
+                cardsInfo.setText(text);
+
+                int r = g.getPlayerScore();
+                if ( r > 21) {
+                    JLabel resultLabel = new JLabel("You Lose...",JLabel.CENTER);
+                    resultLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+
+                    panel.removeAll();
+
+                    JButton betAgain = new JButton("Bet");
+                    betAgain.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+                    betAgain.setFocusable(false);
+                    betAgain.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        frame.getContentPane().removeAll();
+                        frame.repaint();
+                        new GameScene(frame);
+                        }
+                    });
+
+                    panel.add(betAgain);
+    
+                    JButton backToMenu = new JButton("Main Menu");
+                    backToMenu.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+                    backToMenu.setFocusable(false);
+                    backToMenu.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            frame.getContentPane().removeAll();
+                            frame.repaint();
+                            new Menu(frame);
+                        }
+                    });
+    
+                    panel.add(backToMenu);
+    
+                    panel.add(resultLabel);
+    
+                    frame.repaint();
+                }
+
+                frame.repaint();
             }
         });
 
