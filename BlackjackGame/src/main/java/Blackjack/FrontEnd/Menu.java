@@ -23,9 +23,9 @@ public class Menu {
         JButton newGameButton = new JButton("New Game");
         newGameButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 40));
         newGameButton.setFocusable(false);
-        JButton exitButton = new JButton("Exit");
-        exitButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 40));
-        exitButton.setFocusable(false);
+        JButton backButton = new JButton("Exit");
+        backButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 40));
+        backButton.setFocusable(false);
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridy = 0;
@@ -34,17 +34,17 @@ public class Menu {
         constraints.gridy = 1;
         frame.add(newGameButton, constraints);
         constraints.gridy = 2;
-        frame.add(exitButton, constraints);
+        frame.add(backButton, constraints);
 
         newGameButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.getContentPane().removeAll();
                 frame.repaint();
-                new Game(frame);
+                new GameScene(frame);
             }
         });
 
-        exitButton.addActionListener(new ActionListener() {
+        backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
