@@ -3,6 +3,7 @@ package Blackjack;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -21,6 +22,7 @@ public class GameScene {
     private static final int HEIGHT = 380;
     private static JPanel dealerPanel;
     private static JPanel playerPanel;
+    private static DecimalFormat df = new DecimalFormat("0.00");
 
     public GameScene(JFrame frame){ 
         GameScene.frame = frame;
@@ -88,8 +90,12 @@ public class GameScene {
         playerPanel.setBackground(Color.decode("#17a100"));
         playerPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); 
 
-        g.dealerHit();
-        
+        if(!g.played()){
+            g.dealerHit();
+            g.playerHit();
+            g.playerHit();
+        }    
+    
         dealerInfo = new JLabel("<html>Dealer: <br/> Score: " + g.getDealerScore() + "</html>", JLabel.CENTER);
         dealerInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
         dealerPanel.add(dealerInfo);
@@ -97,9 +103,6 @@ public class GameScene {
         dealerPanel.add(showPictures(1));
 
         frame.add(dealerPanel);
-
-        g.playerHit();
-        g.playerHit();
 
         cardsInfo = new JLabel("<html>Player: <br/> Score: " + g.getPlayerScore() + "<html>", JLabel.CENTER);
         cardsInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));   
@@ -214,7 +217,11 @@ public class GameScene {
                     public void actionPerformed(ActionEvent e) {
                         frame.getContentPane().removeAll();
                         frame.repaint();
-                        new GameScene(frame);
+                        try {
+                            gameScreen();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                         }
                     });
 
@@ -243,6 +250,69 @@ public class GameScene {
         });
 
         panel.add(hitButton);
+
+        
+JButton statsButton = new JButton("Stats");
+statsButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+statsButton.setFocusable(false);
+
+statsButton.addActionListener(new ActionListener() {
+    public void actionPerformed(ActionEvent e) {
+        frame.getContentPane().removeAll();
+        frame.setLayout(new GridLayout(3,1));
+        
+        JLabel text = new JLabel("Next Card Probability:", JLabel.CENTER);
+        text.setFont(new Font("Comic Sans MS", Font.PLAIN, 40));
+        frame.add(text);
+
+        panel = new JPanel();
+        panel.setBackground(Color.decode("#17a100"));
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        frame.add(panel);
+        
+        List<Double> l = g.getStats();
+        String[] cards = {"Ace","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Jack","Queen","King"};
+        
+        for (int i = 0; i< 13; i++) {
+            String text2 = "";
+            text2 += cards[i] + ": " + df.format(l.get(i)) + "%";
+            text2 += "";
+            JLabel aux = new JLabel(text2, JLabel.CENTER);
+            aux.setFont(new Font("Comic Sans MS", Font.PLAIN, 20)); 
+        
+            panel.add(aux);
+        }
+        
+        
+    
+        JButton backToGame = new JButton("Game");
+        backToGame.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+        backToGame.setFocusable(false);
+        backToGame.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        gameScreen();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+        });
+
+        panel = new JPanel();
+        panel.setBackground(Color.decode("#17a100"));
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        frame.add(panel);
+
+        panel.add(backToGame); 
+        
+        frame.repaint();
+        frame.setVisible(true);
+    }
+});
+
+panel.add(statsButton);
 
         frame.add(panel);
 

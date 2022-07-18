@@ -1,15 +1,21 @@
 package Blackjack;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Game {
     
     private List<Card> playerHand;
     private List<Card> dealerHand;
-    private int playerScore, dealerScore, wallet, bet, nCards, aceP, aceD;
-    private int[] stats;
+    private int playerScore, dealerScore, wallet, bet, aceP, aceD;
+    private double nCards;
+    private boolean played;
+    private Map<String, Double> stats;
     private Deck deck;
+    private String[] cards = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
+
 
     public Game () {
         playerHand = new LinkedList<Card>();
@@ -19,11 +25,13 @@ public class Game {
         dealerScore = 0;
         wallet = 0;
         bet = 0;
-        nCards = 0;
+        nCards = 0.0;
         aceP = 0;
         aceD = 0;
-        stats = new int[10];
+        stats = new HashMap<String,Double>();
         resetStats();
+        played = false;
+        
     }
 
     public void restart() {
@@ -35,6 +43,7 @@ public class Game {
         bet = 0;
         aceP = 0;
         aceD = 0;
+        played = false;
         deck.newDeck();
         resetStats();
     }
@@ -48,17 +57,25 @@ public class Game {
         wallet -= b;
     }
 
+    public boolean played() {
+        return played;
+    }
+
     private  void resetStats() {
-        for(int i = 0; i < 10; i++) {
-            stats[i] = 4;
+        stats.clear();
+        for (String s : cards) {
+            stats.put(s, 4.0);
         }
     }
 
     public Card playerHit() {
         Card c = deck.getCard();
         playerHand.add(c);
-        stats[c.getValue() -1] -= 1;
+        double cur = stats.get(c.getName());
+        cur --;
+        stats.put(c.getName(), cur);
         nCards ++;
+        played = true;
         if (c.getValue() != 1) {
             playerScore += c.getValue();
         }  
@@ -80,8 +97,11 @@ public class Game {
     public Card dealerHit() {
         Card c = deck.getCard();
         dealerHand.add(c);
-        stats[c.getValue() -1] -= 1;
+        double cur = stats.get(c.getName());
+        cur--;
+        stats.put(c.getName(), cur);
         nCards++;
+        played = true;
         if (c.getValue() != 1) {
             dealerScore += c.getValue();
         }  
@@ -157,11 +177,12 @@ public class Game {
         return wallet;
     }
 
-    public List<Integer> getStats() {
-        int cardsLeft = 52 - nCards;
-        List<Integer> aux = new LinkedList<Integer>();
-        for (int i = 0; i < 10; i++) {
-            aux.add((stats[i]/cardsLeft)*100);
+    public List<Double> getStats() {
+        double cardsLeft = 52.0 - nCards;
+        List<Double> aux = new LinkedList<Double>();
+        for (int i = 0; i < 13; i++) {
+            double chance = 100.0 * (stats.get(cards[i])/cardsLeft);
+            aux.add(chance);
         }
         return aux;
     }
