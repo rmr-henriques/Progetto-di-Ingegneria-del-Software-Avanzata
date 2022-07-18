@@ -2,8 +2,10 @@ package Blackjack;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class GameScene {
@@ -14,6 +16,9 @@ public class GameScene {
     private static int bet;
     private static JLabel dealerInfo;
     private static JLabel cardsInfo;
+    private static final double SCALING = 0.5;
+    private static final int WIDTH = 255;
+    private static final int HEIGHT = 380;
 
     public GameScene(JFrame frame){ 
         GameScene.frame = frame;
@@ -54,29 +59,66 @@ public class GameScene {
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 g.placeBet(bet);
-                gameScreen();
+                try {
+                    gameScreen();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
         panel.add(button);
     }
 
-    private void gameScreen(){
+    private void gameScreen() throws IOException{
         frame.getContentPane().removeAll();
         frame.repaint();
         frame.setLayout(new GridLayout(3, 1, 0, 50));
 
-        Card c1 = g.playerHit();
-        Card c2 = g.playerHit();
+        JPanel dealerPanel = new JPanel();
+        dealerPanel.setBackground(Color.decode("#17a100"));
+        dealerPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); 
+
+        g.playerHit();
+        g.playerHit();
         Card c3 = g.dealerHit();
+        
+        JPanel dealerCard = new JPanel();
+        dealerCard.setBounds(50, 50, 500, 500);
+        String path = "Cards/"+c3.getFigure()+"/"+c3.getName()+".png";
+        Image image = ImageIO.read(getClass().getResource(path));
+        image = image.getScaledInstance((int)(WIDTH*SCALING),(int)(HEIGHT*SCALING), Image.SCALE_FAST);
+        JLabel pic = new JLabel(new ImageIcon(image));
+        dealerCard.add(pic);
+        
+        dealerInfo = new JLabel("<html>Dealer: <br/> Score: " + g.getDealerScore() + "</html>", JLabel.CENTER);
+        dealerInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
 
-        dealerInfo = new JLabel("<html>Dealer: <br/>" + c3.getName() + " of " + c3.getFigure() +"<br/> Score: " + g.getDealerScore() + "</html>", JLabel.CENTER);
-        dealerInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 20)); 
-        frame.add(dealerInfo);
+        dealerPanel.add(dealerInfo);
+        dealerPanel.add(dealerCard);
+        frame.add(dealerPanel);
 
-        cardsInfo = new JLabel("<html>Player: <br/>" + c1.getName() + " of " + c1.getFigure() + "<br/>" + c2.getName() + " of " + c2.getFigure()+ "<br/> Score: " + g.getPlayerScore() + "<html>", JLabel.CENTER);
+        JPanel playerPanel = new JPanel();
+        playerPanel.setBackground(Color.decode("#17a100"));
+        playerPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); 
+
+        cardsInfo = new JLabel("<html>Player: <br/> Score: " + g.getPlayerScore() + "<html>", JLabel.CENTER);
         cardsInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-        frame.add(cardsInfo);
+
+        JPanel playerCard = new JPanel();
+        playerCard.setBounds(50, 50, 500, 500);
+
+        for(Card c : g.getPlayerCards()){
+            String cardPath = "Cards/"+c.getFigure()+"/"+c.getName()+".png";
+            Image cardImage = ImageIO.read(getClass().getResource(cardPath));
+            cardImage = cardImage.getScaledInstance((int)(WIDTH*SCALING),(int)(HEIGHT*SCALING), Image.SCALE_FAST);
+            JLabel cardPic = new JLabel(new ImageIcon(cardImage));
+            playerCard.add(cardPic);
+        }
+
+        playerPanel.add(cardsInfo);
+        playerPanel.add(playerCard);
+        frame.add(playerPanel);
         
         panel = new JPanel();
         panel.setBackground(Color.decode("#17a100"));
