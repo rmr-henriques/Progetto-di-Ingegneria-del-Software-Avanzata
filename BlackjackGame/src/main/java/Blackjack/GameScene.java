@@ -271,7 +271,6 @@ public class GameScene {
                 int c = 0;
                 for(int i = 0; i<4; i++)
                     for(int j = 0; j<4; j++){
-                        System.out.println(c);
                         JPanel grid = new JPanel();
                         grid.setLayout(new FlowLayout()); 
                         grid.setBackground(Color.decode("#17a100"));
