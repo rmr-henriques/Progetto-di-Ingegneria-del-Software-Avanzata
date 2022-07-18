@@ -37,7 +37,7 @@ public class App
         while(g.getDealerScore() < 21 ) {
              System.out.println("Dealer score: "+ g.getDealerScore());
         }
-        if(g.checkWin()) {
+        if(g.checkWin() == 1) {
             System.out.println("Player wins");
             g.settle();
             System.out.println("funds: " + g.getWallet());

@@ -125,22 +125,31 @@ public class Game {
         return dealerHand;
     }
 
-    public boolean checkWin() {
-        if(getPlayerScore() > 21 ) {
-            return false;
+    // return 0 if dealer wins, 1 if player wins, 2 if its a tie
+    public int checkWin() {
+        int a = getPlayerScore();
+        int b = getDealerScore();
+        if(a > 21 ) {
+            return 0;
         }
-        if(getDealerScore() > 21) {
-            return true;
+        if(b > 21) {
+            return 1;
         }
-        if (getDealerScore() > getPlayerScore()) {
-            return false;
+        if (b > a) {
+            return 0;
         }
-        return true;
+        if (a == b) {
+            return 2;
+        }
+        return 1;
     }
 
     public void settle() {
-        if(checkWin()) {
+        if(checkWin() == 1) {
             wallet += (bet*2);
+        }
+        if(checkWin() == 2) {
+            wallet += bet;
         }
     }
 
