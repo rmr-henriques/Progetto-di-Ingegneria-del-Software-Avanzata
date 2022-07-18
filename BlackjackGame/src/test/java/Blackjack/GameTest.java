@@ -48,7 +48,7 @@ public class GameTest {
     @Test
     public void testPlayerHit() {
         int score = game.getPlayerScore();
-        int ace_played = game.getStats().get(0);
+        double ace_played = game.getStats().get(0);
         Card c = game.playerHit();
         assertNotNull(c, "aA card should always be drawn");
         if ( c.getValue() != 1 ) {
@@ -64,7 +64,7 @@ public class GameTest {
     @Test
     public void testDealerHit() {
         int score = game.getPlayerScore();
-        int ace_played = game.getStats().get(0);
+        double ace_played = game.getStats().get(0);
         Card c = game.playerHit();
         assertNotNull(c, "aA card should always be drawn");
         if ( c.getValue() != 1 ) {
