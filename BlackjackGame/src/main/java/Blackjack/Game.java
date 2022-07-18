@@ -71,7 +71,7 @@ public class Game {
     public void playDealer() {
         while(getDealerScore() < 21) {
             dealerHit();
-            if (getDealerScore() >= getPlayerScore()) {
+            if (getDealerScore() >= 17) {
                 break;
             }
         }

@@ -29,7 +29,6 @@ public class Menu {
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridy = 0;
-
         frame.add(title, constraints);
         constraints.gridy = 1;
         frame.add(newGameButton, constraints);
