@@ -11,6 +11,7 @@ public class Game {
     private List<Card> dealerHand;
     private int playerScore, dealerScore, wallet, bet, aceP, aceD;
     private double nCards;
+    private boolean played;
     private Map<String, Double> stats;
     private Deck deck;
     private String[] cards = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
@@ -29,6 +30,7 @@ public class Game {
         aceD = 0;
         stats = new HashMap<String,Double>();
         resetStats();
+        played = false;
         
     }
 
@@ -41,6 +43,7 @@ public class Game {
         bet = 0;
         aceP = 0;
         aceD = 0;
+        played = false;
         deck.newDeck();
         resetStats();
     }
@@ -52,6 +55,10 @@ public class Game {
     public void placeBet(int b) {
         bet = b;
         wallet -= b;
+    }
+
+    public boolean played() {
+        return played;
     }
 
     private  void resetStats() {
@@ -68,6 +75,7 @@ public class Game {
         cur --;
         stats.put(c.getName(), cur);
         nCards ++;
+        played = true;
         if (c.getValue() != 1) {
             playerScore += c.getValue();
         }  
@@ -93,6 +101,7 @@ public class Game {
         cur--;
         stats.put(c.getName(), cur);
         nCards++;
+        played = true;
         if (c.getValue() != 1) {
             dealerScore += c.getValue();
         }  
@@ -172,9 +181,7 @@ public class Game {
         double cardsLeft = 52.0 - nCards;
         List<Double> aux = new LinkedList<Double>();
         for (int i = 0; i < 13; i++) {
-            System.out.println(stats.get(cards[i]) + "  " + cardsLeft);
             double chance = 100.0 * (stats.get(cards[i])/cardsLeft);
-            System.out.println("BOOBA " + chance);
             aux.add(chance);
         }
         return aux;

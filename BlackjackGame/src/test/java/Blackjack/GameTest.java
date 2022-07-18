@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
+
 @TestInstance(Lifecycle.PER_CLASS)
 public class GameTest {
     Game game;
@@ -48,7 +50,6 @@ public class GameTest {
     @Test
     public void testPlayerHit() {
         int score = game.getPlayerScore();
-        double ace_played = game.getStats().get(0);
         Card c = game.playerHit();
         assertNotNull(c, "aA card should always be drawn");
         if ( c.getValue() != 1 ) {
@@ -56,7 +57,6 @@ public class GameTest {
         }
         else {
             assertEquals(score, game.getPlayerScore());
-            assertTrue(game.getStats().get(0) == (ace_played + 1), "An ace should be played");
         }
 
     }
@@ -64,7 +64,6 @@ public class GameTest {
     @Test
     public void testDealerHit() {
         int score = game.getPlayerScore();
-        double ace_played = game.getStats().get(0);
         Card c = game.playerHit();
         assertNotNull(c, "aA card should always be drawn");
         if ( c.getValue() != 1 ) {
@@ -72,7 +71,6 @@ public class GameTest {
         }
         else {
             assertEquals(score, game.getPlayerScore());
-            assertTrue(game.getStats().get(0) == (ace_played + 1), "An ace should be played");
         }
     }
 
@@ -105,8 +103,13 @@ public class GameTest {
             assertEquals(50, game.getWallet(), "Player tie");
     }
 
-
-
+    @Test
+    public void testGetStats() {
+        Card c1 = game.playerHit();
+        List<Double> stats = game.getStats();
+    
+        //assertEquals();
+    }
 
 
 
