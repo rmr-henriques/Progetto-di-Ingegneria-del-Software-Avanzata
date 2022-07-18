@@ -248,7 +248,7 @@ public class GameScene {
 
         panel.add(hitButton);
 
-        JButton statsButton = new JButton("Stats");
+        JButton statsButton = new JButton("Next Card Chances");
         statsButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
         statsButton.setFocusable(false);
 
@@ -261,13 +261,8 @@ public class GameScene {
                 text.setFont(new Font("Comic Sans MS", Font.PLAIN, 40));
                 frame.add(text);
 
-                panel = new JPanel();
-                panel.setBackground(Color.decode("#17a100"));
-                panel.setLayout(new FlowLayout(FlowLayout.CENTER));
-
-                frame.add(panel);
-
                 JPanel stats = new JPanel();
+                stats.setBackground(Color.decode("#17a100"));
                 stats.setLayout(new GridLayout(4,4));
 
                 List<Double> l = g.getStats();
@@ -279,13 +274,14 @@ public class GameScene {
                         System.out.println(c);
                         JPanel grid = new JPanel();
                         grid.setLayout(new FlowLayout()); 
+                        grid.setBackground(Color.decode("#17a100"));
                         try {
                             grid.add(getCardPicture(cards[c]));
                         } catch (IOException e1) {
                             e1.printStackTrace();
                         }
                         String text2 = "";
-                        text2 += cards[c] + ": " + df.format(l.get(i)) + "%";
+                        text2 += ": " + df.format(l.get(i)) + "%";
                         text2 += "";
                         JLabel aux = new JLabel(text2, JLabel.CENTER);
                         aux.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
@@ -295,8 +291,10 @@ public class GameScene {
                         if(i==3)
                             break;
                     }
+                
+                frame.add(stats);
 
-                JButton backToGame = new JButton("Game");
+                JButton backToGame = new JButton("Back");
                 backToGame.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
                 backToGame.setFocusable(false);
                 backToGame.addActionListener(new ActionListener() {
@@ -309,13 +307,13 @@ public class GameScene {
                     }
                 });
 
-                panel = new JPanel();
-                panel.setBackground(Color.decode("#17a100"));
-                panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+                stats = new JPanel();
+                stats.setBackground(Color.decode("#17a100"));
+                stats.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-                frame.add(panel);
+                stats.add(backToGame);
 
-                panel.add(backToGame);
+                frame.add(stats);
 
                 frame.repaint();
                 frame.setVisible(true);
