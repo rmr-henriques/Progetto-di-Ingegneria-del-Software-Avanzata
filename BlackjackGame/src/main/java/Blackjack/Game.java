@@ -57,12 +57,12 @@ public class Game {
         wallet -= b;
     }
 
-    public int getBet() {
-        return bet;
-    }
-
     public boolean played() {
         return played;
+    }
+
+    public int getBet() {
+        return bet;
     }
 
     private  void resetStats() {
