@@ -57,6 +57,10 @@ public class Game {
         wallet -= b;
     }
 
+    public int getBet() {
+        return bet;
+    }
+
     public boolean played() {
         return played;
     }
