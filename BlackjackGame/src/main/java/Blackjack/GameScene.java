@@ -280,9 +280,7 @@ public class GameScene {
                         } catch (IOException e1) {
                             e1.printStackTrace();
                         }
-                        String text2 = "";
-                        text2 += ": " + df.format(l.get(i)) + "%";
-                        text2 += "";
+                        String text2 = ": " + df.format(l.get(c)) + "%";
                         JLabel aux = new JLabel(text2, JLabel.CENTER);
                         aux.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
                         c++;
