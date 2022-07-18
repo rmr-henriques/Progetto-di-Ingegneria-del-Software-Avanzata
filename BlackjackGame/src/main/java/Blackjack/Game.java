@@ -61,6 +61,10 @@ public class Game {
         return played;
     }
 
+    public int getBet() {
+        return bet;
+    }
+
     private  void resetStats() {
         stats.clear();
         for (String s : cards) {
