@@ -10,7 +10,8 @@ public class Main {
         frame = new JFrame("Blackjack Game");
         frame.getContentPane().setBackground(Color.decode("#17a100"));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        //frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        frame.setSize(1000,1000);
 
         new Menu(frame);
      }

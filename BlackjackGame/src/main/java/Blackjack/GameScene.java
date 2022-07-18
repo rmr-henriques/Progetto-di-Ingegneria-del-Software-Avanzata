@@ -24,13 +24,13 @@ public class GameScene {
     private static JPanel playerPanel;
     private static DecimalFormat df = new DecimalFormat("0.00");
 
-    public GameScene(JFrame frame){ 
+    public GameScene(JFrame frame) {
         GameScene.frame = frame;
         g = new Game();
-        showGame();
+        betScreen();
     }
 
-    private void showGame() {
+    private void betScreen() {
         g.newPlayer(100);
 
         frame.setLayout(new GridLayout(2, 1));
@@ -55,7 +55,7 @@ public class GameScene {
         frame.setVisible(true);
     }
 
-    private void createBetButton(){
+    private void createBetButton() {
         JButton button = new JButton(Integer.toString(bet));
         button.setFont(new Font("Comic Sans MS", Font.PLAIN, 100));
         button.setFocusable(false);
@@ -74,7 +74,7 @@ public class GameScene {
         panel.add(button);
     }
 
-    private void gameScreen() throws IOException{
+    private void gameScreen() throws IOException {
         frame.getContentPane().removeAll();
         frame.repaint();
         frame.setLayout(new GridLayout(5, 1, 0, 50));
@@ -84,37 +84,37 @@ public class GameScene {
 
         dealerPanel = new JPanel();
         dealerPanel.setBackground(Color.decode("#17a100"));
-        dealerPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); 
+        dealerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         playerPanel = new JPanel();
         playerPanel.setBackground(Color.decode("#17a100"));
-        playerPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); 
+        playerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        if(!g.played()){
+        if (!g.played()) {
             g.dealerHit();
             g.playerHit();
             g.playerHit();
-        }    
-    
+        }
+
         dealerInfo = new JLabel("<html>Dealer: <br/> Score: " + g.getDealerScore() + "</html>", JLabel.CENTER);
         dealerInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
         dealerPanel.add(dealerInfo);
-        
+
         dealerPanel.add(showPictures(1));
 
         frame.add(dealerPanel);
 
         cardsInfo = new JLabel("<html>Player: <br/> Score: " + g.getPlayerScore() + "<html>", JLabel.CENTER);
-        cardsInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));   
+        cardsInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
         playerPanel.add(cardsInfo);
 
         playerPanel.add(showPictures(0));
 
         frame.add(playerPanel);
-        
+
         panel = new JPanel();
         panel.setBackground(Color.decode("#17a100"));
-        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 20,50));
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 50));
 
         JButton holdButton = new JButton("Hold");
         holdButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
@@ -136,15 +136,15 @@ public class GameScene {
                     e1.printStackTrace();
                 }
 
-                String result = ""; 
-                if(g.checkWin() == 1)
+                String result = "";
+                if (g.checkWin() == 1)
                     result = "You Win!";
                 else if (g.checkWin() == 0)
                     result = "You Lose...";
-                else 
+                else
                     result = "You Tie.";
-                
-                JLabel resultLabel = new JLabel(result,JLabel.CENTER);
+
+                JLabel resultLabel = new JLabel(result, JLabel.CENTER);
                 resultLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
 
                 panel.removeAll();
@@ -204,8 +204,8 @@ public class GameScene {
                 }
 
                 int r = g.getPlayerScore();
-                if ( r > 21) {
-                    JLabel resultLabel = new JLabel("You Lose...",JLabel.CENTER);
+                if (r > 21) {
+                    JLabel resultLabel = new JLabel("You Lose...", JLabel.CENTER);
                     resultLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
 
                     panel.removeAll();
@@ -214,19 +214,16 @@ public class GameScene {
                     betAgain.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
                     betAgain.setFocusable(false);
                     betAgain.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        frame.getContentPane().removeAll();
-                        frame.repaint();
-                        try {
-                            gameScreen();
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
+                        public void actionPerformed(ActionEvent e) {
+                            frame.getContentPane().removeAll();
+                            frame.repaint();
+                            g.restart();
+                            betScreen();
                         }
                     });
 
                     panel.add(betAgain);
-    
+
                     JButton backToMenu = new JButton("Main Menu");
                     backToMenu.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
                     backToMenu.setFocusable(false);
@@ -237,11 +234,11 @@ public class GameScene {
                             new Menu(frame);
                         }
                     });
-    
+
                     panel.add(backToMenu);
-    
+
                     panel.add(resultLabel);
-    
+
                     frame.repaint();
                 }
 
@@ -251,91 +248,117 @@ public class GameScene {
 
         panel.add(hitButton);
 
-        
-JButton statsButton = new JButton("Stats");
-statsButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-statsButton.setFocusable(false);
+        JButton statsButton = new JButton("Stats");
+        statsButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+        statsButton.setFocusable(false);
 
-statsButton.addActionListener(new ActionListener() {
-    public void actionPerformed(ActionEvent e) {
-        frame.getContentPane().removeAll();
-        frame.setLayout(new GridLayout(3,1));
-        
-        JLabel text = new JLabel("Next Card Probability:", JLabel.CENTER);
-        text.setFont(new Font("Comic Sans MS", Font.PLAIN, 40));
-        frame.add(text);
+        statsButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.getContentPane().removeAll();
+                frame.setLayout(new GridLayout(3, 1));
 
-        panel = new JPanel();
-        panel.setBackground(Color.decode("#17a100"));
-        panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+                JLabel text = new JLabel("Next Card Probability:", JLabel.CENTER);
+                text.setFont(new Font("Comic Sans MS", Font.PLAIN, 40));
+                frame.add(text);
 
-        frame.add(panel);
-        
-        List<Double> l = g.getStats();
-        String[] cards = {"Ace","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Jack","Queen","King"};
-        
-        for (int i = 0; i< 13; i++) {
-            String text2 = "";
-            text2 += cards[i] + ": " + df.format(l.get(i)) + "%";
-            text2 += "";
-            JLabel aux = new JLabel(text2, JLabel.CENTER);
-            aux.setFont(new Font("Comic Sans MS", Font.PLAIN, 20)); 
-        
-            panel.add(aux);
-        }
-        
-        
-    
-        JButton backToGame = new JButton("Game");
-        backToGame.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
-        backToGame.setFocusable(false);
-        backToGame.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        gameScreen();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+                panel = new JPanel();
+                panel.setBackground(Color.decode("#17a100"));
+                panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+                frame.add(panel);
+
+                JPanel stats = new JPanel();
+                stats.setLayout(new GridLayout(4,4));
+
+                List<Double> l = g.getStats();
+                String[] cards = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
+
+                int c = 0;
+                for(int i = 0; i<4; i++)
+                    for(int j = 0; j<4; j++){
+                        System.out.println(c);
+                        JPanel grid = new JPanel();
+                        grid.setLayout(new FlowLayout()); 
+                        try {
+                            grid.add(getCardPicture(cards[c]));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                        String text2 = "";
+                        text2 += cards[c] + ": " + df.format(l.get(i)) + "%";
+                        text2 += "";
+                        JLabel aux = new JLabel(text2, JLabel.CENTER);
+                        aux.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+                        c++;
+                        grid.add(aux);
+                        stats.add(grid);
+                        if(i==3)
+                            break;
                     }
-                }
+
+                JButton backToGame = new JButton("Game");
+                backToGame.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
+                backToGame.setFocusable(false);
+                backToGame.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            gameScreen();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                });
+
+                panel = new JPanel();
+                panel.setBackground(Color.decode("#17a100"));
+                panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+                frame.add(panel);
+
+                panel.add(backToGame);
+
+                frame.repaint();
+                frame.setVisible(true);
+            }
         });
 
-        panel = new JPanel();
-        panel.setBackground(Color.decode("#17a100"));
-        panel.setLayout(new FlowLayout(FlowLayout.CENTER));
-
-        frame.add(panel);
-
-        panel.add(backToGame); 
-        
-        frame.repaint();
-        frame.setVisible(true);
-    }
-});
-
-panel.add(statsButton);
+        panel.add(statsButton);
 
         frame.add(panel);
 
         frame.setVisible(true);
     }
 
-    private JPanel showPictures(int user) throws IOException{
+    private JPanel showPictures(int user) throws IOException {
         JPanel card = new JPanel();
         card.setBounds(50, 50, 500, 500);
         
         List<Card> cards;
-        if(user == 0)
+        if (user == 0)
             cards = g.getPlayerCards();
-        else 
+        else
             cards = g.getDealerCards();
 
-        for(Card c : cards){
-            String cardPath = "Cards/"+c.getFigure()+"/"+c.getName()+".png";
+        for (Card c : cards) {
+            String cardPath = "Cards/" + c.getFigure() + "/" + c.getName() + ".png";
             Image cardImage = ImageIO.read(getClass().getResource(cardPath));
-            cardImage = cardImage.getScaledInstance((int)(WIDTH*SCALING),(int)(HEIGHT*SCALING), Image.SCALE_FAST);
+            cardImage = cardImage.getScaledInstance((int) (WIDTH * SCALING), (int) (HEIGHT * SCALING),
+                    Image.SCALE_FAST);
             JLabel cardPic = new JLabel(new ImageIcon(cardImage));
             card.add(cardPic);
         }
+        return card;
+    }
+
+    private JPanel getCardPicture(String name) throws IOException{
+        JPanel card = new JPanel();
+        card.setBounds(50, 50, 500, 500);
+        String cardPath = "Cards/Hearts/" + name + ".png";
+        Image cardImage = ImageIO.read(getClass().getResource(cardPath));
+        cardImage = cardImage.getScaledInstance((int) (WIDTH * SCALING * 0.5), (int) (HEIGHT * SCALING * 0.5),
+                Image.SCALE_FAST);
+        JLabel cardPic = new JLabel(new ImageIcon(cardImage));
+        card.add(cardPic);
         return card;
     }
 }
