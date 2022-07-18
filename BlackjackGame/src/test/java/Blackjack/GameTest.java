@@ -10,10 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class GameTest {
+    private static DecimalFormat df = new DecimalFormat("0.00");
+    
     Game game;
     @BeforeAll
     public void execBeforeAll() {
@@ -70,7 +73,7 @@ public class GameTest {
             assertTrue(game.getPlayerScore() == (score + c.getValue()), "Player score should be updated");
         }
         else {
-            assertEquals(score, game.getPlayerScore());
+            assertEquals(11, game.getPlayerScore(), "Only one ace so score should equal to 11S");
         }
     }
 
@@ -107,8 +110,13 @@ public class GameTest {
     public void testGetStats() {
         Card c1 = game.playerHit();
         List<Double> stats = game.getStats();
-    
-        //assertEquals();
+        String[] names = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
+        int index = 0;
+        for (int i = 0; i < 13; i ++)
+            if(c1.getName() == names[i])
+                index = i;
+
+        assertEquals("5,88", df.format(stats.get(index)), "The probability value should be equal to 3/51 * 100 = 5.88");
     }
 
 
